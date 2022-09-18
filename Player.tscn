@@ -1,0 +1,95 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://art/player.glb" type="PackedScene" id=1]
+[ext_resource path="res://Player.gd" type="Script" id=2]
+
+[sub_resource type="SphereShape" id=3]
+margin = 0.001
+
+[sub_resource type="CylinderShape" id=2]
+
+[sub_resource type="Animation" id=4]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Pivot/Character:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.916223, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Pivot/Character:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "float"
+length = 1.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Pivot/Character:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.2, 0.7, 1, 1.2 ),
+"transitions": PoolRealArray( 0.574349, 0.517632, 1.8025, 1.7411 ),
+"update": 0,
+"values": [ Vector3( 0, 0.916223, 0 ), Vector3( 0, 1.138, 0 ), Vector3( 0, 0.593, 0 ), Vector3( 0, 0.916223, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Pivot/Character:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.1, 0.6, 0.9, 1.2 ),
+"transitions": PoolRealArray( 0.535887, 0.554785, 1.56917, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 8, 0, 0 ), Vector3( -7, 0, 0 ), Vector3( 0, 0, 0 ) ]
+}
+
+[node name="Player" type="KinematicBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.94269, 0 )
+collision_mask = 6
+script = ExtResource( 2 )
+
+[node name="Pivot" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0202392, 0 )
+
+[node name="Character" parent="Pivot" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.916223, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1.02652, 0, 0, 0, 0.623067, 0, 0, 0, 1.16469, 0.0015564, 1.16316, 0.000247955 )
+shape = SubResource( 3 )
+
+[node name="MobDetector" type="Area" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape" type="CollisionShape" parent="MobDetector"]
+transform = Transform( 1.2851, 0, 0, 0, 0.258161, 0, 0, 0, 1.2851, 0, 1.01327, 0 )
+shape = SubResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "float"
+anims/RESET = SubResource( 4 )
+anims/float = SubResource( 5 )
+
+[connection signal="body_entered" from="MobDetector" to="." method="_on_MobDetector_body_entered"]

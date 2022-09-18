@@ -1,0 +1,59 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://art/mob.glb" type="PackedScene" id=1]
+[ext_resource path="res://Mob.gd" type="Script" id=2]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.877747, 0.524546, 1.53542 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "float"
+length = 1.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Pivot/Character:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.2, 0.7, 1, 1.2 ),
+"transitions": PoolRealArray( 0.574349, 0.517632, 1.8025, 1.7411 ),
+"update": 0,
+"values": [ Vector3( 0, 0.916223, 0 ), Vector3( 0, 1.138, 0 ), Vector3( 0, 0.593, 0 ), Vector3( 0, 0.916223, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Pivot/Character:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.1, 0.6, 0.9, 1.2 ),
+"transitions": PoolRealArray( 0.535887, 0.554785, 1.56917, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 8, 0, 0 ), Vector3( -7, 0, 0 ), Vector3( 0, 0, 0 ) ]
+}
+
+[node name="Mob" type="KinematicBody" groups=["mob"]]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource( 2 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1.25821, 0, 0, 0, 1.12317, 0, 0, 0, 0.897172, 0, 0.86117, 0.0599813 )
+shape = SubResource( 1 )
+
+[node name="Pivot" type="Spatial" parent="."]
+
+[node name="Character" parent="Pivot" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.916223, 0 )
+
+[node name="VisibilityNotifier" type="VisibilityNotifier" parent="."]
+transform = Transform( 1.19599, 0, 0, 0, 0.704772, 0, 0, 0, 1.65008, 0, 0.25066, 0.316974 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "float"
+anims/float = SubResource( 2 )
+
+[connection signal="screen_exited" from="VisibilityNotifier" to="." method="_on_VisibilityNotifier_screen_exited"]
